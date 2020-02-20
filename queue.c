@@ -68,6 +68,7 @@ bool q_insert_head(queue_t *q, char *s)
         q->tail = newh;
     }
     q->size++;
+
     return true;
 }
 
@@ -117,22 +118,22 @@ bool q_insert_tail(queue_t *q, char *s)
  */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
-    if (!q || !q->size) {
+    if (!q || !q->size)
         return false;
-    }
     list_ele_t *target = q->head;
     int len = strlen(target->value) + 1;
-    if (!sp) {
+    if (!sp)
         return 0;
-    }
+    if (len > bufsize)
+        len = bufsize - 1;
     strncpy(sp, target->value, len);
+    sp[bufsize - 1] = 0;
     q->head = q->head->next;
     free(target->value);
     free(target);
     q->size--;
-    if (!q->size) {
+    if (!q->size)
         q->tail = NULL;
-    }
     return true;
 }
 
@@ -182,8 +183,4 @@ void q_reverse(queue_t *q)
  * No effect if q is NULL or empty. In addition, if q has only one
  * element, do nothing.
  */
-void q_sort(queue_t *q)
-{
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
-}
+void q_sort(queue_t *q) {}
