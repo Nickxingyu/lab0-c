@@ -24,13 +24,15 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
-    while (q->head) {
-        list_ele_t *temp = q->head;
-        q->head = q->head->next;
-        free(temp->value);
-        free(temp);
+    if (q) {
+        while (q->head) {
+            list_ele_t *temp = q->head;
+            q->head = q->head->next;
+            free(temp->value);
+            free(temp);
+        }
+        free(q);
     }
-    free(q);
 }
 
 /*
@@ -155,21 +157,23 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
-    if (q->size > 1) {
-        list_ele_t *f = q->head;
-        list_ele_t *s = f->next;
-        list_ele_t *t = s->next;
-        f->next = NULL;
-        s->next = f;
-        while (t) {
-            f = s;
-            s = t;
-            t = t->next;
+    if (q) {
+        if (q->size > 1) {
+            list_ele_t *f = q->head;
+            list_ele_t *s = f->next;
+            list_ele_t *t = s->next;
+            f->next = NULL;
             s->next = f;
+            while (t) {
+                f = s;
+                s = t;
+                t = t->next;
+                s->next = f;
+            }
+            t = q->head;
+            q->head = q->tail;
+            q->tail = t;
         }
-        t = q->head;
-        q->head = q->tail;
-        q->tail = t;
     }
 }
 
