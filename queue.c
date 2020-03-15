@@ -184,7 +184,7 @@ void q_reverse(queue_t *q)
  */
 void Msort(list_ele_t **head);
 void split_queue(list_ele_t **mid_node);
-void Mearge(list_ele_t **result, list_ele_t *source_1, list_ele_t *source_2);
+void Merge(list_ele_t **result, list_ele_t *source_1, list_ele_t *source_2);
 
 void q_sort(queue_t *q)
 {
@@ -196,6 +196,9 @@ void q_sort(queue_t *q)
     }
 }
 
+/*
+ *Implement mergesort function
+ */
 void Msort(list_ele_t **head)
 {
     if (!(*head))
@@ -207,9 +210,12 @@ void Msort(list_ele_t **head)
     split_queue(&right_node);
     Msort(&left_node);
     Msort(&right_node);
-    Mearge(head, left_node, right_node);
+    Merge(head, left_node, right_node);
 }
 
+/*
+ *Split the original queue to two queues
+ */
 void split_queue(list_ele_t **mid_node)
 {
     list_ele_t *pioneer = (*mid_node)->next;
@@ -225,15 +231,18 @@ void split_queue(list_ele_t **mid_node)
     pioneer->next = NULL;
 }
 
-void Mearge(list_ele_t **result, list_ele_t *source_1, list_ele_t *source_2)
+/*
+ *Merge two queue and assign the head to the spesific pointer
+ */
+void Merge(list_ele_t **result, list_ele_t *source_1, list_ele_t *source_2)
 {
     list_ele_t *head = NULL;
     list_ele_t *tail = NULL;
     while (source_1 && source_2) {
         if (strcasecmp(source_1->value, source_2->value) > 0) {
             /*
-            source_2->value is smaller than or equal to source_1->value
-            */
+             *source_2->value is smaller than or equal to source_1->value
+             */
             if (!head) {
                 head = tail = source_2;
             } else {
@@ -243,8 +252,8 @@ void Mearge(list_ele_t **result, list_ele_t *source_1, list_ele_t *source_2)
             source_2 = source_2->next;
         } else {
             /*
-            source_1->value is smaller than source_2->value
-            */
+             *source_1->value is smaller than source_2->value
+             */
             if (!head) {
                 head = tail = source_1;
             } else {
@@ -260,21 +269,3 @@ void Mearge(list_ele_t **result, list_ele_t *source_1, list_ele_t *source_2)
         tail->next = source_2;  // Join the remaining queue
     *result = head;
 }
-/*
-
-list_ele_t
-    {
-    char *value;
-    struct ELE *next;
-    }
-
-
-
-queue_t
-{
-    list_ele_t *head;
-    list_ele_t *tail;
-    int size;
-}
-
-*/
