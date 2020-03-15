@@ -555,7 +555,7 @@ bool do_sort(int argc, char *argv[])
 
     bool ok = true;
     if (q) {
-        for (list_ele_t *e = q->head; e && --cnt; e = e->next) {
+        for (list_ele_t *e = q->head; e && e->next && --cnt; e = e->next) {
             /* Ensure each element in ascending order */
             /* FIXME: add an option to specify sorting order */
             if (strcasecmp(e->value, e->next->value) > 0) {
