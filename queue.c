@@ -189,6 +189,11 @@ void q_sort(queue_t *q)
     if (!q || q->size <= 1)
         return;
     Msort(&(q->head));
+
+    /* Sort elements of queue and adjust q->head.
+     * Because q->tail is at the original location, following code
+     * adjust q->tail to the correct location.
+     */
     while (q->tail->next) {
         q->tail = q->tail->next;
     }
