@@ -102,15 +102,20 @@ class Tracer:
         for t in tidList:
             tname = self.traceDict[t]
             if self.verbLevel > 0:
-                print("+++ TESTING trace %s:" % tname)
+                print("\033[94m+++ TESTING trace %s:\033[0m " % tname)
             ok = self.runTrace(t)
             maxval = self.maxScores[t]
             tval = maxval if ok else 0
-            print("---\t%s\t%d/%d" % (tname, tval, maxval))
+            if tval == 0:
+                print("\033[91m---\t%s\t%d/%d\033[0m" % (tname, tval, maxval))
+                print("")
+            else:
+                print("---\t%s\t%d/%d" % (tname, tval, maxval))
+                print("")
             score += tval
             maxscore += maxval
             scoreDict[t] = tval
-        print("---\tTOTAL\t\t%d/%d" % (score, maxscore))
+        print("\033[93m---\tTOTAL\t\t%d/%d\033[0m" % (score, maxscore))
         if self.autograde:
             # Generate JSON string
             jstring = '{"scores": {'
